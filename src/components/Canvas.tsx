@@ -20,6 +20,8 @@ import {
     ContextMenuTrigger,
 } from './ui/context-menu';
 import { Badge } from './ui/badge';
+import { Switch } from './ui/switch';
+import { Label } from './ui/label';
 
 const nodeTypes = {
     'flow-card': FlowCardNode,
@@ -36,6 +38,7 @@ export function Canvas() {
     } = useFlowStore();
 
     const [isImportOpen, setIsImportOpen] = useState(false);
+    const [showMiniMap, setShowMiniMap] = useState(true);
 
     const validationErrors = useMemo(() => validateFlow(nodes, edges), [nodes, edges]);
 
@@ -70,12 +73,14 @@ export function Canvas() {
                     >
                         <Background variant={BackgroundVariant.Dots} gap={16} size={1.5} color="#cbd5e1" />
                         <Controls className="!mb-4 !ml-4 !shadow-md !rounded-lg" />
-                        <MiniMap
-                            className="!mb-4 !mr-4 !rounded-xl !shadow-md !border-2 !border-slate-100"
-                            nodeColor={(node) => {
-                                return node.data.isStartNode ? '#10b981' : '#3b82f6';
-                            }}
-                        />
+                        {showMiniMap && (
+                            <MiniMap
+                                className="!mb-4 !mr-4 !rounded-xl !shadow-md !border-2 !border-slate-100"
+                                nodeColor={(node) => {
+                                    return node.data.isStartNode ? '#10b981' : '#3b82f6';
+                                }}
+                            />
+                        )}
 
                         <Panel position="top-left" className="!m-4 flex flex-col gap-3">
                             <div className="flex items-center gap-4 bg-white/90 backdrop-blur-md px-4 py-3 rounded-xl shadow-sm border border-slate-200">
@@ -98,6 +103,30 @@ export function Canvas() {
                                     </ul>
                                 </div>
                             )}
+                        </Panel>
+
+                        <Panel position="top-right" className="!m-4">
+                            <div className="flex items-center gap-4 bg-white/90 backdrop-blur-md px-4 py-3 rounded-xl shadow-sm border border-slate-200">
+                                <div className="flex items-center space-x-2">
+                                    <Switch
+                                        id="minimap-mode"
+                                        checked={showMiniMap}
+                                        onCheckedChange={setShowMiniMap}
+                                        className="data-[state=checked]:bg-blue-600"
+                                    />
+                                    <Label htmlFor="minimap-mode" className="text-xs font-semibold text-slate-600 cursor-pointer">
+                                        MiniMap
+                                    </Label>
+                                </div>
+                                <div className="h-4 w-[1px] bg-slate-200"></div>
+                                <button
+                                    onClick={() => setIsImportOpen(true)}
+                                    className="flex items-center gap-1.5 rounded-md border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-50 shadow-sm"
+                                >
+                                    <Download className="h-4 w-4" />
+                                    Import JSON
+                                </button>
+                            </div>
                         </Panel>
 
                         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none">
