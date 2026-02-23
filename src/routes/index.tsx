@@ -26,7 +26,7 @@ function App() {
         <InteractiveTrigger />
         <div className="flex h-screen w-full flex-row overflow-hidden bg-slate-50">
           <AppSidebar />
-          <div className="flex flex-1 flex-col overflow-hidden bg-slate-100 relative">
+          <div className="flex flex-1 flex-row overflow-hidden bg-slate-100 relative">
             <div className="flex-1 relative">
               <Canvas />
             </div>
