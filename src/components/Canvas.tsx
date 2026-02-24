@@ -105,7 +105,7 @@ export function Canvas() {
                             )}
                         </Panel>
 
-                        <Panel position="top-right" className="!m-4">
+                        <Panel position="top-right" className="!m-4 !mr-16">
                             <div className="flex items-center gap-4 bg-white/90 backdrop-blur-md px-4 py-3 rounded-xl shadow-sm border border-slate-200">
                                 <div className="flex items-center space-x-2">
                                     <Switch

@@ -6,21 +6,39 @@ import {
     SidebarGroupContent,
     SidebarGroupLabel,
     SidebarHeader,
+    useSidebar,
 } from './ui/sidebar';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { Label } from './ui/label';
 import { Badge } from './ui/badge';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from './ui/select';
+import { useEffect } from 'react';
 
 export function AppSidebar() {
     const { nodes, edges, updateNodeData, updateEdgeData } = useFlowStore();
+    const { setOpen } = useSidebar();
 
     // React Flow sets 'selected: true' on nodes when clicked
     const selectedNode = nodes.find((n) => n.selected);
 
+    useEffect(() => {
+        if (selectedNode?.id) {
+            setOpen(true);
+        } else {
+            setOpen(false);
+        }
+    }, [selectedNode?.id, setOpen]);
+
     if (!selectedNode) {
         return (
-            <Sidebar collapsible="offcanvas" side="left" className="border-r border-slate-200">
+            <Sidebar collapsible="offcanvas" side="right" className="border-l border-slate-200">
                 <SidebarHeader className="mt-12">
                     <h2 className="px-2 pt-2 text-lg font-semibold text-slate-800">Node Editor</h2>
                 </SidebarHeader>
@@ -37,7 +55,7 @@ export function AppSidebar() {
     const outgoingEdges = edges.filter((e) => e.source === selectedNode.id);
 
     return (
-        <Sidebar collapsible="offcanvas" side="left" className="border-r border-slate-200 bg-white">
+        <Sidebar collapsible="offcanvas" side="right" className="border-l border-slate-200 bg-white">
             <SidebarHeader className="flex flex-col gap-2 p-4 mt-12">
                 <div className="flex items-center justify-between">
                     <h2 className="text-lg font-semibold text-slate-800">Edit Node</h2>
@@ -101,12 +119,21 @@ export function AppSidebar() {
                                                 To: {edge.target}
                                             </span>
                                         </div>
-                                        <Input
-                                            placeholder="Condition (e.g. true)"
-                                            value={edge.data?.condition || ''}
-                                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateEdgeData(edge.id, { condition: e.target.value })}
-                                            className="h-8 text-xs bg-white focus-visible:ring-1 focus-visible:ring-blue-500"
-                                        />
+                                        <Select
+                                            value={edge.data?.condition || 'always'}
+                                            onValueChange={(val) => updateEdgeData(edge.id, { condition: val })}
+                                        >
+                                            <SelectTrigger className="h-8 text-xs bg-white focus:ring-1 focus:ring-blue-500">
+                                                <SelectValue placeholder="Select condition" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="always" className="text-xs">Always (Default)</SelectItem>
+                                                <SelectItem value="on_error" className="text-xs">On Error</SelectItem>
+                                                <SelectItem value="matches_intent" className="text-xs">Matches Intent</SelectItem>
+                                                <SelectItem value="user_silence" className="text-xs">User Silence</SelectItem>
+                                                <SelectItem value="is_authorized" className="text-xs">Is Authorized</SelectItem>
+                                            </SelectContent>
+                                        </Select>
                                     </div>
                                 ))}
                             </div>
