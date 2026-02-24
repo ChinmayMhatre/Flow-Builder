@@ -95,8 +95,9 @@ export function Canvas() {
                         )}
 
                         <Panel position="top-left" className="!m-4 flex flex-col gap-3">
-                            <div className="flex items-center gap-4 bg-white/90 backdrop-blur-md px-4 py-3 rounded-md shadow-sm border border-slate-200">
-                                <h1 className="text-sm font-bold text-slate-800">Visual Flow Builder</h1>
+                            <div className="flex items-center gap-3 bg-white/90 backdrop-blur-md px-4 py-3 rounded-md shadow-sm border border-slate-200">
+                                <img src="/favicon.svg" alt="Flow Builder Logo" className="h-6 w-6" />
+                                <h1 className="text-sm font-bold text-slate-800">Flow Builder</h1>
                             </div>
 
                             {validationErrors.length > 0 && (

@@ -46,6 +46,22 @@ export function validateFlow(nodes: FlowNode[], edges: FlowEdge[]): ValidationEr
                 message: 'Start node has no outgoing connections.',
             });
         }
+
+        // Enforce 1-1 condition mapping for outgoing edges
+        const outgoingEdges = edges.filter((e) => e.source === node.id);
+        const conditionSet = new Set<string>();
+        outgoingEdges.forEach((edge) => {
+            const condition = (edge.data?.condition || '').trim();
+            if (conditionSet.has(condition)) {
+                errors.push({
+                    nodeId: node.id,
+                    message: condition
+                        ? `Multiple edges share the same condition: "${condition}"`
+                        : `Multiple edges have an empty condition.`,
+                });
+            }
+            conditionSet.add(condition);
+        });
     });
 
     // 3. Node ID uniqueness is structurally guaranteed by Zustand unless we let them edit IDs.

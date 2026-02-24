@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { MousePointerClick, Zap, GitCommit, FileJson, X } from 'lucide-react';
+import { MousePointerClick, GitCommit, FileJson, X } from 'lucide-react';
 import { Button } from './ui/button';
 
 export function OnboardingModal() {
@@ -25,10 +25,6 @@ export function OnboardingModal() {
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm">
             <div className="relative w-full max-w-lg rounded-md bg-white p-8 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.25)] animate-in zoom-in-95 duration-500 overflow-hidden ring-1 ring-slate-200">
-                {/* Decorative background element */}
-                <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-br from-indigo-50/80 via-purple-50/50 to-pink-50/80 opacity-80" />
-                <div className="absolute -top-24 -right-24 w-48 h-48 bg-blue-300/20 rounded-full blur-3xl mix-blend-multiply" />
-                <div className="absolute -top-24 -left-24 w-48 h-48 bg-purple-300/20 rounded-full blur-3xl mix-blend-multiply" />
 
                 <button
                     onClick={handleClose}
@@ -38,10 +34,10 @@ export function OnboardingModal() {
                 </button>
 
                 <div className="relative z-10 mb-8 flex flex-col items-center text-center mt-2">
-                    <div className="mb-5 rounded-md bg-gradient-to-tr from-blue-50 to-indigo-100 p-4 text-blue-500 shadow-sm ring-1 ring-white/60">
-                        <Zap className="h-8 w-8" />
+                    <div className="mb-5">
+                        <img src="/favicon.svg" alt="Flow Builder Logo" className="h-[4.5rem] w-[4.5rem] drop-shadow-sm rounded-[14px]" />
                     </div>
-                    <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-800 to-slate-600">Visual Builder</h2>
+                    <h2 className="text-2xl font-bold text-slate-800">Flow Builder</h2>
                     <p className="mt-3 text-sm text-slate-500 leading-relaxed max-w-[300px]">
                         Design powerful conversational AI nodes logically passing values back and forth.
                     </p>
