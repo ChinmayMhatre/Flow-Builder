@@ -31,7 +31,7 @@ function CodeHighlighter({ code }: { code: string }) {
 
     return (
         <pre
-            className="text-[12px] font-mono leading-relaxed whitespace-pre selection:bg-slate-700/50"
+            className="text-[12px] font-mono leading-relaxed whitespace-pre selection:bg-slate-700/50 text-slate-300"
             dangerouslySetInnerHTML={{ __html: highlighted }}
         />
     );
