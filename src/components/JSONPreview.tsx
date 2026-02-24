@@ -1,12 +1,53 @@
 import { useMemo, useState } from 'react';
 import { useFlowStore } from '../store/flowStore';
 import type { SchemaNode, SchemaEdge } from '../types/flow';
-// @ts-ignore
-import { default as SyntaxHighlighter } from 'react-syntax-highlighter/dist/esm/prism.js';
-// @ts-ignore
-import vscDarkPlus from 'react-syntax-highlighter/dist/esm/styles/prism/vsc-dark-plus.js';
 import { Copy, Check, Code2, ChevronUp, ChevronDown } from 'lucide-react';
 import { Button } from './ui/button';
+import { useEffect } from 'react';
+
+function DeferredHighlighter({ data }: { data: any }) {
+    const [SyntaxPlugin, setSyntaxPlugin] = useState<any>(null);
+
+    useEffect(() => {
+        Promise.all([
+            // @ts-ignore
+            import('react-syntax-highlighter/dist/esm/prism.js'),
+            // @ts-ignore
+            import('react-syntax-highlighter/dist/esm/styles/prism/vsc-dark-plus.js')
+        ]).then(([core, style]) => {
+            setSyntaxPlugin({
+                Highlighter: core.default,
+                theme: style.default
+            });
+        });
+    }, []);
+
+    if (!SyntaxPlugin) {
+        return (
+            <pre className="text-slate-300 bg-transparent p-0 m-0 text-xs font-mono w-full h-full">
+                {JSON.stringify(data, null, 2)}
+            </pre>
+        );
+    }
+
+    const { Highlighter, theme } = SyntaxPlugin;
+    return (
+        <Highlighter
+            language="json"
+            style={theme}
+            customStyle={{
+                background: 'transparent',
+                padding: 0,
+                margin: 0,
+                fontSize: '0.75rem',
+                height: '100%',
+            }}
+            wrapLines={true}
+        >
+            {JSON.stringify(data, null, 2)}
+        </Highlighter>
+    );
+}
 
 export function JSONPreview() {
     const { nodes, edges } = useFlowStore();
@@ -75,20 +116,7 @@ export function JSONPreview() {
                         {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
                     </Button>
                     <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
-                        <SyntaxHighlighter
-                            language="json"
-                            style={vscDarkPlus}
-                            customStyle={{
-                                background: 'transparent',
-                                padding: 0,
-                                margin: 0,
-                                fontSize: '0.75rem',
-                                height: '100%',
-                            }}
-                            wrapLines={true}
-                        >
-                            {JSON.stringify(generatedSchema, null, 2)}
-                        </SyntaxHighlighter>
+                        <DeferredHighlighter data={generatedSchema} />
                     </div>
                 </div>
             </div>
