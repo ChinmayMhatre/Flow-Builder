@@ -57,7 +57,7 @@ export function JSONPreview() {
             </div>
 
             <div className="flex-1 overflow-y-auto overflow-x-hidden p-4 custom-scrollbar text-xs bg-slate-100">
-                <div className="relative h-full rounded-xl border border-slate-700 bg-slate-900 shadow-md flex flex-col overflow-hidden group">
+                <div className="relative h-full rounded-md border border-slate-700 bg-slate-900 shadow-md flex flex-col overflow-hidden group">
                     <Button
                         onClick={(e) => {
                             e.stopPropagation();

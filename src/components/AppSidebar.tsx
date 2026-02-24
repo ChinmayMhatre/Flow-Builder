@@ -125,7 +125,7 @@ export function AppSidebar() {
                         ) : (
                             <div className="flex flex-col gap-3">
                                 {outgoingEdges.map((edge) => (
-                                    <div key={edge.id} className="rounded-lg border border-slate-200 bg-slate-50 p-3 shadow-sm">
+                                    <div key={edge.id} className="rounded-md border border-slate-200 bg-slate-50 p-3 shadow-sm">
                                         <div className="mb-2 flex items-center justify-between">
                                             <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
                                                 To: {edge.target}
@@ -133,7 +133,7 @@ export function AppSidebar() {
                                             <Button
                                                 variant="ghost"
                                                 size="icon"
-                                                className="h-5 w-5 text-slate-400 hover:text-red-500 hover:bg-red-50"
+                                                className="h-5 w-5 text-slate-400 hover:text-red-400 hover:bg-red-50"
                                                 onClick={() => deleteEdge(edge.id)}
                                             >
                                                 <X className="h-3 w-3" />
@@ -166,7 +166,7 @@ export function AppSidebar() {
                         <SidebarGroupContent className="px-2">
                             <Button
                                 variant="destructive"
-                                className="w-full bg-red-500 hover:bg-red-600 text-white font-semibold transition-colors flex items-center justify-center gap-2"
+                                className="w-full bg-red-400 hover:bg-red-500 text-white font-semibold transition-colors flex items-center justify-center gap-2"
                                 onClick={() => {
                                     deleteNode(selectedNode.id);
                                     setOpen(false);

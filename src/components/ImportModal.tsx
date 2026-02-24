@@ -119,7 +119,7 @@ export function ImportModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm">
-            <div className="relative w-full max-w-2xl rounded-xl bg-white p-6 shadow-2xl">
+            <div className="relative w-full max-w-2xl rounded-md bg-white p-6 shadow-2xl">
                 <button
                     onClick={onClose}
                     className="absolute right-4 top-4 rounded-md p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors"
@@ -128,7 +128,7 @@ export function ImportModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                 </button>
 
                 <div className="mb-4 flex items-center gap-2">
-                    <div className="rounded-lg bg-blue-100 p-2 text-blue-600">
+                    <div className="rounded-md bg-blue-50 p-2 text-blue-400">
                         <FileJson className="h-5 w-5" />
                     </div>
                     <h2 className="text-xl font-bold text-slate-800">Import Flow JSON</h2>
@@ -139,14 +139,14 @@ export function ImportModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                 </p>
 
                 <textarea
-                    className="h-64 w-full resize-none rounded-lg border border-slate-300 p-4 font-mono text-sm text-slate-700 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 shadow-inner"
+                    className="h-64 w-full resize-none rounded-md border border-slate-300 p-4 font-mono text-sm text-slate-700 focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-400 shadow-inner"
                     placeholder="[\n  {\n    &#34;id&#34;: &#34;node_1&#34;,\n    &#34;prompt&#34;: &#34;Hello world&#34;,\n    &#34;edges&#34;: []\n  }\n]"
                     value={jsonInput}
                     onChange={(e) => setJsonInput(e.target.value)}
                 />
 
                 {error && (
-                    <div className="mt-3 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-600">
+                    <div className="mt-3 rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-500">
                         <strong>Import Error:</strong> {error}
                     </div>
                 )}
@@ -154,13 +154,13 @@ export function ImportModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                 <div className="mt-6 flex justify-end gap-3">
                     <button
                         onClick={onClose}
-                        className="rounded-lg px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors"
+                        className="rounded-md px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors"
                     >
                         Cancel
                     </button>
                     <button
                         onClick={handleImport}
-                        className="rounded-lg bg-blue-600 px-6 py-2 text-sm font-semibold text-white shadow-md transition-colors hover:bg-blue-700"
+                        className="rounded-md bg-blue-400 px-6 py-2 text-sm font-semibold text-white shadow-md transition-colors hover:bg-blue-500"
                     >
                         Import JSON
                     </button>

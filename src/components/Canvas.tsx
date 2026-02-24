@@ -84,10 +84,10 @@ export function Canvas() {
                         className="validation-flow-canvas"
                     >
                         <Background variant={BackgroundVariant.Dots} gap={16} size={1.5} color="#cbd5e1" />
-                        <Controls className="!mb-4 !ml-4 !shadow-md !rounded-lg" />
+                        <Controls className="!mb-4 !ml-4 !shadow-md !rounded-md" />
                         {showMiniMap && (
                             <MiniMap
-                                className="!mb-4 !mr-4 !rounded-xl !shadow-md !border-2 !border-slate-100"
+                                className="!mb-4 !mr-4 !rounded-md !shadow-md !border-2 !border-slate-100"
                                 nodeColor={(node) => {
                                     return node.data.isStartNode ? '#10b981' : '#3b82f6';
                                 }}
@@ -95,12 +95,12 @@ export function Canvas() {
                         )}
 
                         <Panel position="top-left" className="!m-4 flex flex-col gap-3">
-                            <div className="flex items-center gap-4 bg-white/90 backdrop-blur-md px-4 py-3 rounded-xl shadow-sm border border-slate-200">
+                            <div className="flex items-center gap-4 bg-white/90 backdrop-blur-md px-4 py-3 rounded-md shadow-sm border border-slate-200">
                                 <h1 className="text-sm font-bold text-slate-800">Visual Flow Builder</h1>
                             </div>
 
                             {validationErrors.length > 0 && (
-                                <div className="max-w-md rounded-xl border border-red-200 bg-red-50/95 backdrop-blur-md p-3 shadow-sm flex flex-col gap-2">
+                                <div className="max-w-md rounded-md border border-red-200 bg-red-50/95 backdrop-blur-md p-3 shadow-sm flex flex-col gap-2">
                                     <div className="flex items-center gap-2 text-red-700 font-semibold text-sm">
                                         <AlertCircle className="h-4 w-4" />
                                         Flow Validation Errors ({validationErrors.length})
@@ -118,7 +118,7 @@ export function Canvas() {
                         </Panel>
 
                         <Panel position="top-right" className="!m-4 !mr-16">
-                            <div className="flex items-center gap-2 bg-white/90 backdrop-blur-md px-3 py-2 rounded-xl shadow-sm border border-slate-200">
+                            <div className="flex items-center gap-2 bg-white/90 backdrop-blur-md px-3 py-2 rounded-md shadow-sm border border-slate-200">
                                 <button
                                     onClick={handleValidate}
                                     title="Validate Flow"

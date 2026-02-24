@@ -9,10 +9,10 @@ export function FlowCardNode({ data, selected, id }: NodeProps<FlowNode>) {
     return (
         <div
             className={`relative min-w-[280px] rounded-xl border-2 bg-white p-4 shadow-sm transition-all ${selected
-                    ? 'border-blue-500 shadow-md ring-4 ring-blue-500/20'
-                    : data.error
-                        ? 'border-red-500 shadow-md ring-4 ring-red-500/20'
-                        : 'border-slate-200 hover:border-slate-300'
+                ? 'border-blue-500 shadow-md ring-4 ring-blue-500/20'
+                : data.error
+                    ? 'border-red-500 shadow-md ring-4 ring-red-500/20'
+                    : 'border-slate-200 hover:border-slate-300'
                 }`}
         >
             {/* Target Handle (Incoming connections) - Hidden for start node */}
@@ -28,11 +28,11 @@ export function FlowCardNode({ data, selected, id }: NodeProps<FlowNode>) {
             <div className="mb-3 flex items-center justify-between border-b border-slate-100 pb-3">
                 <div className="flex items-center gap-2">
                     {isStartNode ? (
-                        <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600">
+                        <div className="flex h-7 w-7 items-center justify-center rounded-md bg-emerald-100/60 text-emerald-500">
                             <Play className="h-4 w-4" fill="currentColor" />
                         </div>
                     ) : (
-                        <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-100 text-blue-600">
+                        <div className="flex h-7 w-7 items-center justify-center rounded-md bg-blue-100/60 text-blue-500">
                             <MessageSquare className="h-4 w-4" />
                         </div>
                     )}
