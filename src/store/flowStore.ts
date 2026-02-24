@@ -30,6 +30,9 @@ interface FlowState {
     updateNodeData: (id: string, data: Partial<NodeData>) => void;
     updateEdgeData: (id: string, data: Partial<EdgeData>) => void;
     addNode: () => void;
+    deleteNode: (id: string) => void;
+    updateNodeId: (oldId: string, newId: string) => void;
+    deleteEdge: (id: string) => void;
 }
 
 const initialNodes: FlowNode[] = [
@@ -53,8 +56,19 @@ export const useFlowStore = create<FlowState>((set, get) => ({
 
     // React Flow required handlers
     onNodesChange: (changes: NodeChange<FlowNode>[]) => {
+        // Prevent deletion of the start node via keyboard/react-flow
+        const filteredChanges = changes.filter((change) => {
+            if (change.type === 'remove') {
+                const nodeToDelete = get().nodes.find((n) => n.id === change.id);
+                if (nodeToDelete?.data?.isStartNode) {
+                    return false;
+                }
+            }
+            return true;
+        });
+
         set({
-            nodes: applyNodeChanges(changes, get().nodes) as FlowNode[],
+            nodes: applyNodeChanges(filteredChanges, get().nodes) as FlowNode[],
         });
     },
     onEdgesChange: (changes: EdgeChange<FlowEdge>[]) => {
@@ -74,6 +88,7 @@ export const useFlowStore = create<FlowState>((set, get) => ({
             id: `${connection.source}-${connection.target}`,
             data: newEdgeData,
             type: 'default',
+            label: newEdgeData.condition,
         };
 
         set({
@@ -101,7 +116,11 @@ export const useFlowStore = create<FlowState>((set, get) => ({
         set({
             edges: get().edges.map((e) => {
                 if (e.id === id) {
-                    return { ...e, data: { ...e.data, ...partialData } as EdgeData };
+                    return {
+                        ...e,
+                        data: { ...e.data, ...partialData } as EdgeData,
+                        label: partialData.condition !== undefined ? partialData.condition : e.label
+                    };
                 }
                 return e;
             }),
@@ -121,5 +140,41 @@ export const useFlowStore = create<FlowState>((set, get) => ({
             },
         };
         set({ nodes: [...get().nodes, newNode] });
+    },
+
+    deleteNode: (id: string) => {
+        set({
+            nodes: get().nodes.filter((n) => n.id !== id),
+            edges: get().edges.filter((e) => e.source !== id && e.target !== id),
+        });
+    },
+
+    updateNodeId: (oldId: string, newId: string) => {
+        const { nodes, edges } = get();
+        // Prevent duplicate or empty
+        if (!newId.trim() || nodes.some(n => n.id === newId)) return;
+
+        set({
+            nodes: nodes.map(n => n.id === oldId ? { ...n, id: newId } : n),
+            edges: edges.map(e => {
+                if (e.source === oldId || e.target === oldId) {
+                    const newSource = e.source === oldId ? newId : e.source;
+                    const newTarget = e.target === oldId ? newId : e.target;
+                    return {
+                        ...e,
+                        source: newSource,
+                        target: newTarget,
+                        id: `${newSource}-${newTarget}`
+                    };
+                }
+                return e;
+            })
+        });
+    },
+
+    deleteEdge: (id: string) => {
+        set({
+            edges: get().edges.filter(e => e.id !== id)
+        });
     }
 }));

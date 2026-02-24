@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import {
     ReactFlow,
     Background,
@@ -10,8 +10,8 @@ import {
 import '@xyflow/react/dist/style.css';
 import { useFlowStore } from '../store/flowStore';
 import { FlowCardNode } from './nodes/FlowCardNode';
-import { validateFlow } from '../lib/validation';
-import { AlertCircle, Plus, Download, MousePointerClick } from 'lucide-react';
+import { validateFlow, type ValidationError } from '../lib/validation';
+import { AlertCircle, Plus, Download, MousePointerClick, Play } from 'lucide-react';
 import { ImportModal } from './ImportModal';
 import {
     ContextMenu,
@@ -40,7 +40,19 @@ export function Canvas() {
     const [isImportOpen, setIsImportOpen] = useState(false);
     const [showMiniMap, setShowMiniMap] = useState(true);
 
-    const validationErrors = useMemo(() => validateFlow(nodes, edges), [nodes, edges]);
+    const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
+
+    const handleValidate = () => {
+        setValidationErrors(validateFlow(nodes, edges));
+    };
+
+    // Clear validation errors automatically when the user starts fixing the canvas
+    useEffect(() => {
+        if (validationErrors.length > 0) {
+            setValidationErrors([]);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [nodes, edges]);
 
     // We can pass validation errors to nodes by updating their data, or just use a derived approach.
     // For simplicity, we will pass global errors down if needed, but the xyflow nodes 
@@ -107,6 +119,14 @@ export function Canvas() {
 
                         <Panel position="top-right" className="!m-4 !mr-16">
                             <div className="flex items-center gap-4 bg-white/90 backdrop-blur-md px-4 py-3 rounded-xl shadow-sm border border-slate-200">
+                                <button
+                                    onClick={handleValidate}
+                                    className="flex items-center gap-1.5 rounded-md border border-emerald-500 bg-emerald-50 px-3 py-1.5 text-xs font-bold text-emerald-700 transition-colors hover:bg-emerald-100 shadow-sm"
+                                >
+                                    <Play className="h-3.5 w-3.5" />
+                                    Validate
+                                </button>
+                                <div className="h-4 w-[1px] bg-slate-200"></div>
                                 <div className="flex items-center space-x-2">
                                     <Switch
                                         id="minimap-mode"
@@ -123,7 +143,7 @@ export function Canvas() {
                                     onClick={() => setIsImportOpen(true)}
                                     className="flex items-center gap-1.5 rounded-md border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-50 shadow-sm"
                                 >
-                                    <Download className="h-4 w-4" />
+                                    <Download className="h-3.5 w-3.5" />
                                     Import JSON
                                 </button>
                             </div>

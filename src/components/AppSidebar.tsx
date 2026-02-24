@@ -19,17 +19,22 @@ import {
     SelectTrigger,
     SelectValue,
 } from './ui/select';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { Button } from './ui/button';
+import { Trash2, X } from 'lucide-react';
 
 export function AppSidebar() {
-    const { nodes, edges, updateNodeData, updateEdgeData } = useFlowStore();
+    const { nodes, edges, updateNodeData, updateEdgeData, deleteNode, updateNodeId, deleteEdge } = useFlowStore();
     const { setOpen } = useSidebar();
 
     // React Flow sets 'selected: true' on nodes when clicked
     const selectedNode = nodes.find((n) => n.selected);
 
+    const [editId, setEditId] = useState('');
+
     useEffect(() => {
         if (selectedNode?.id) {
+            setEditId(selectedNode.id);
             setOpen(true);
         } else {
             setOpen(false);
@@ -74,10 +79,17 @@ export function AppSidebar() {
                         <div className="grid gap-2">
                             <Label className="text-slate-700">Node ID</Label>
                             <Input
-                                value={selectedNode.id}
-                                readOnly
-                                title="Node ID cannot be changed"
-                                className="bg-slate-50 text-slate-500 cursor-not-allowed text-sm"
+                                value={editId}
+                                placeholder="Unique ID..."
+                                onChange={(e) => setEditId(e.target.value)}
+                                onBlur={() => {
+                                    if (editId.trim() && editId !== selectedNode.id) {
+                                        updateNodeId(selectedNode.id, editId.trim());
+                                    } else {
+                                        setEditId(selectedNode.id); // revert if empty or same
+                                    }
+                                }}
+                                className="text-sm focus-visible:ring-1 focus-visible:ring-blue-500"
                             />
                         </div>
 
@@ -118,6 +130,14 @@ export function AppSidebar() {
                                             <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
                                                 To: {edge.target}
                                             </span>
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                className="h-5 w-5 text-slate-400 hover:text-red-500 hover:bg-red-50"
+                                                onClick={() => deleteEdge(edge.id)}
+                                            >
+                                                <X className="h-3 w-3" />
+                                            </Button>
                                         </div>
                                         <Select
                                             value={edge.data?.condition || 'always'}
@@ -140,6 +160,24 @@ export function AppSidebar() {
                         )}
                     </SidebarGroupContent>
                 </SidebarGroup>
+
+                {!selectedNode.data.isStartNode && (
+                    <SidebarGroup className="mt-4 pt-4 border-t border-slate-100 mb-8">
+                        <SidebarGroupContent className="px-2">
+                            <Button
+                                variant="destructive"
+                                className="w-full bg-red-500 hover:bg-red-600 text-white font-semibold transition-colors flex items-center justify-center gap-2"
+                                onClick={() => {
+                                    deleteNode(selectedNode.id);
+                                    setOpen(false);
+                                }}
+                            >
+                                <Trash2 className="h-4 w-4" />
+                                Delete Node
+                            </Button>
+                        </SidebarGroupContent>
+                    </SidebarGroup>
+                )}
             </SidebarContent>
         </Sidebar>
     );
