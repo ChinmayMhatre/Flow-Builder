@@ -2,7 +2,8 @@ import { useMemo, useState } from 'react';
 import { useFlowStore } from '../store/flowStore';
 import type { SchemaNode, SchemaEdge } from '../types/flow';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
+// @ts-ignore
+import vscDarkPlus from 'react-syntax-highlighter/dist/esm/styles/prism/vsc-dark-plus.js';
 import { Copy, Check, Code2, ChevronUp, ChevronDown } from 'lucide-react';
 import { Button } from './ui/button';
 
