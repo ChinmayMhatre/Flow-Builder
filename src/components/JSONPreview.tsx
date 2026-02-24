@@ -47,7 +47,7 @@ export function JSONPreview() {
             >
                 <div className="flex items-center gap-2">
                     <Code2 className="h-4 w-4 text-emerald-600" />
-                    <h2 className="text-sm font-bold tracking-wide text-slate-800 uppercase">Live JSON</h2>
+                    <h2 className="text-sm font-bold tracking-wide text-slate-800 uppercase">JSON Preview</h2>
                 </div>
                 <div className="flex items-center gap-2">
                     <div className="h-7 w-7 flex items-center justify-center text-slate-400">

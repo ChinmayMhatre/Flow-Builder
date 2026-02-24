@@ -11,7 +11,7 @@ import '@xyflow/react/dist/style.css';
 import { useFlowStore } from '../store/flowStore';
 import { FlowCardNode } from './nodes/FlowCardNode';
 import { validateFlow, type ValidationError } from '../lib/validation';
-import { AlertCircle, Plus, Download, MousePointerClick, Play } from 'lucide-react';
+import { AlertCircle, Plus, Download, MousePointerClick, Play, Map } from 'lucide-react';
 import { ImportModal } from './ImportModal';
 import {
     ContextMenu,
@@ -20,8 +20,7 @@ import {
     ContextMenuTrigger,
 } from './ui/context-menu';
 import { Badge } from './ui/badge';
-import { Switch } from './ui/switch';
-import { Label } from './ui/label';
+
 
 const nodeTypes = {
     'flow-card': FlowCardNode,
@@ -119,30 +118,19 @@ export function Canvas() {
                         </Panel>
 
                         <Panel position="top-right" className="!m-4 !mr-16">
-                            <div className="flex items-center gap-4 bg-white/90 backdrop-blur-md px-4 py-3 rounded-xl shadow-sm border border-slate-200">
+                            <div className="flex items-center gap-2 bg-white/90 backdrop-blur-md px-3 py-2 rounded-xl shadow-sm border border-slate-200">
                                 <button
                                     onClick={handleValidate}
+                                    title="Validate Flow"
                                     className="flex items-center gap-1.5 rounded-md border border-emerald-500 bg-emerald-50 px-3 py-1.5 text-xs font-bold text-emerald-700 transition-colors hover:bg-emerald-100 shadow-sm"
                                 >
                                     <Play className="h-3.5 w-3.5" />
                                     Validate
                                 </button>
-                                <div className="h-4 w-[1px] bg-slate-200"></div>
-                                <div className="flex items-center space-x-2">
-                                    <Switch
-                                        id="minimap-mode"
-                                        checked={showMiniMap}
-                                        onCheckedChange={setShowMiniMap}
-                                        className="data-[state=checked]:bg-blue-600"
-                                    />
-                                    <Label htmlFor="minimap-mode" className="text-xs font-semibold text-slate-600 cursor-pointer">
-                                        MiniMap
-                                    </Label>
-                                </div>
-                                <div className="h-4 w-[1px] bg-slate-200"></div>
+                                <div className="h-4 w-[1px] bg-slate-200 mx-1"></div>
                                 <button
                                     onClick={() => setIsImportOpen(true)}
-                                    className="flex items-center gap-1.5 rounded-md border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-50 shadow-sm"
+                                    className="flex items-center gap-1.5 rounded-sm border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-50 shadow-sm"
                                 >
                                     <Download className="h-3.5 w-3.5" />
                                     Import JSON
@@ -166,6 +154,10 @@ export function Canvas() {
                         <ContextMenuItem onClick={() => setIsImportOpen(true)} className="flex items-center gap-2 cursor-pointer py-2 text-slate-700 focus:bg-slate-100">
                             <Download className="h-4 w-4 text-blue-600" />
                             <span className="font-medium font-sm">Import JSON Schema</span>
+                        </ContextMenuItem>
+                        <ContextMenuItem onClick={() => setShowMiniMap(!showMiniMap)} className="flex items-center gap-2 cursor-pointer py-2 text-slate-700 focus:bg-slate-100">
+                            <Map className="h-4 w-4 text-purple-600" />
+                            <span className="font-medium font-sm">{showMiniMap ? 'Hide MiniMap' : 'Show MiniMap'}</span>
                         </ContextMenuItem>
                     </ContextMenuContent>
 
