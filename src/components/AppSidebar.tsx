@@ -148,10 +148,12 @@ export function AppSidebar() {
                                             </SelectTrigger>
                                             <SelectContent>
                                                 <SelectItem value="always" className="text-xs">Always (Default)</SelectItem>
+                                                <SelectItem value="if_yes" className="text-xs">If Yes</SelectItem>
+                                                <SelectItem value="if_no" className="text-xs">If No</SelectItem>
+                                                <SelectItem value="valid_account" className="text-xs">Valid Account</SelectItem>
+                                                <SelectItem value="account_created" className="text-xs">Account Created</SelectItem>
                                                 <SelectItem value="on_error" className="text-xs">On Error</SelectItem>
-                                                <SelectItem value="matches_intent" className="text-xs">Matches Intent</SelectItem>
                                                 <SelectItem value="user_silence" className="text-xs">User Silence</SelectItem>
-                                                <SelectItem value="is_authorized" className="text-xs">Is Authorized</SelectItem>
                                             </SelectContent>
                                         </Select>
                                     </div>

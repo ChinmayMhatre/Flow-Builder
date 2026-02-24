@@ -3,6 +3,7 @@ import { useFlowStore } from '../store/flowStore';
 import type { FlowNode, FlowEdge } from '../store/flowStore';
 import { X, FileJson } from 'lucide-react';
 import dagre from 'dagre';
+import { ALLOWED_CONDITIONS } from '../lib/validation';
 
 export function ImportModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
     const [jsonInput, setJsonInput] = useState('');
@@ -61,6 +62,11 @@ export function ImportModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                     node.edges.forEach((edge: any, edgeIdx: number) => {
                         if (!edge.to_node_id) {
                             throw new Error(`Edge at index ${edgeIdx} in node "${node.id}" is missing "to_node_id".`);
+                        }
+
+                        const condition = (edge.condition || '').trim();
+                        if (condition && !ALLOWED_CONDITIONS.includes(condition as any)) {
+                            throw new Error(`Invalid condition "${condition}" on edge ${edgeIdx} in node "${node.id}".`);
                         }
                         newEdges.push({
                             id: `${node.id}-${edge.to_node_id}`,

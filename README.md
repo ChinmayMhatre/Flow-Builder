@@ -1,4 +1,4 @@
-# Visual Flow Builder
+# Flow Builder
 
 A modern, lightweight visual flow builder built with React, TypeScript, and Vite. This application allows users to construct node-based logical flows (similar to tools like Zapier or n8n) and instantly exports them to a strict, validated JSON schema.
 
@@ -34,6 +34,60 @@ A modern, lightweight visual flow builder built with React, TypeScript, and Vite
 ✅ **Delete Key:** Quickly remove nodes simply by selecting them and pressing `Backspace` or `Delete`.  
 ✅ **Dynamic Validation Trigger:** A dedicated "Validate" button allows users to deliberately check their work, clearing automatically once user edits begin.  
 ✅ **Onboarding Experience:** A beautiful pastel welcome modal explaining the canvas mechanics for first-time visitors (persisted via `localStorage`).  
+
+---
+
+## Example Flow to Import
+
+You can copy and paste the following snippet into the **Import JSON** modal to instantly populate the canvas with a working example showing multiple conditional paths (using unique conditions like `if_yes`, `if_no`, etc.):
+
+```json
+[
+  {
+    "id": "start-node",
+    "description": "Greeting the user",
+    "prompt": "Hello! Are you an existing customer?",
+    "edges": [
+      {
+        "to_node_id": "node_existing_customer",
+        "condition": "if_yes"
+      },
+      {
+        "to_node_id": "node_new_customer",
+        "condition": "if_no"
+      }
+    ]
+  },
+  {
+    "id": "node_existing_customer",
+    "description": "Handle existing customers",
+    "prompt": "Welcome back! Please enter your account number.",
+    "edges": [
+      {
+        "to_node_id": "node_support_menu",
+        "condition": "valid_account"
+      }
+    ]
+  },
+  {
+    "id": "node_new_customer",
+    "description": "Onboard new users",
+    "prompt": "Let's get you set up with a new account.",
+    "edges": [
+      {
+        "to_node_id": "node_support_menu",
+        "condition": "account_created"
+      }
+    ]
+  },
+  {
+    "id": "node_support_menu",
+    "description": "Main support hub",
+    "prompt": "How can we help you today? (Billing, Technical, General)",
+    "edges": []
+  }
+]
+```
 
 ---
 

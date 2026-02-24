@@ -6,6 +6,16 @@ export interface ValidationError {
     message: string;
 }
 
+export const ALLOWED_CONDITIONS = [
+    'always',
+    'if_yes',
+    'if_no',
+    'valid_account',
+    'account_created',
+    'on_error',
+    'user_silence'
+] as const;
+
 export function validateFlow(nodes: FlowNode[], edges: FlowEdge[]): ValidationError[] {
     const errors: ValidationError[] = [];
 
@@ -52,6 +62,14 @@ export function validateFlow(nodes: FlowNode[], edges: FlowEdge[]): ValidationEr
         const conditionSet = new Set<string>();
         outgoingEdges.forEach((edge) => {
             const condition = (edge.data?.condition || '').trim();
+
+            if (condition && !ALLOWED_CONDITIONS.includes(condition as any)) {
+                errors.push({
+                    nodeId: node.id,
+                    message: `Invalid condition "${condition}" on outgoing edge.`,
+                });
+            }
+
             if (conditionSet.has(condition)) {
                 errors.push({
                     nodeId: node.id,
