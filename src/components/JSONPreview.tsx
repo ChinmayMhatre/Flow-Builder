@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { useFlowStore } from '../store/flowStore';
 import type { SchemaNode, SchemaEdge } from '../types/flow';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vs } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { Copy, Check, Code2, ChevronUp, ChevronDown } from 'lucide-react';
 import { Button } from './ui/button';
 
@@ -50,29 +50,32 @@ export function JSONPreview() {
                     <h2 className="text-sm font-bold tracking-wide text-slate-800 uppercase">Live JSON</h2>
                 </div>
                 <div className="flex items-center gap-2">
-                    <Button
-                        onClick={handleCopy}
-                        variant="outline"
-                        size="icon"
-                        className={`h-7 w-7 transition-colors shadow-sm ${copied
-                            ? 'bg-emerald-50 border-emerald-200 text-emerald-600 hover:bg-emerald-100 hover:text-emerald-700'
-                            : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-900'
-                            }`}
-                    >
-                        {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
-                    </Button>
                     <div className="h-7 w-7 flex items-center justify-center text-slate-400">
                         {isOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronUp className="h-4 w-4" />}
                     </div>
                 </div>
             </div>
 
-            <div className="flex-1 overflow-y-auto overflow-x-hidden p-4 custom-scrollbar text-xs bg-slate-50/50">
-                <div className="h-full rounded-xl border border-slate-200 bg-white shadow-sm flex flex-col overflow-hidden">
+            <div className="flex-1 overflow-y-auto overflow-x-hidden p-4 custom-scrollbar text-xs bg-slate-100">
+                <div className="relative h-full rounded-xl border border-slate-700 bg-slate-900 shadow-md flex flex-col overflow-hidden group">
+                    <Button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            handleCopy(e);
+                        }}
+                        variant="outline"
+                        size="icon"
+                        className={`absolute right-3 top-3 z-10 h-7 w-7 transition-all shadow-sm opacity-0 group-hover:opacity-100 ${copied
+                            ? 'bg-emerald-50 border-emerald-200 text-emerald-600 hover:bg-emerald-100 hover:text-emerald-700'
+                            : 'bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700 hover:text-white'
+                            }`}
+                    >
+                        {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+                    </Button>
                     <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
                         <SyntaxHighlighter
                             language="json"
-                            style={vs}
+                            style={vscDarkPlus}
                             customStyle={{
                                 background: 'transparent',
                                 padding: 0,

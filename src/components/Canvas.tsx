@@ -81,6 +81,7 @@ export function Canvas() {
                         onConnect={onConnect}
                         nodeTypes={nodeTypes}
                         fitView
+                        fitViewOptions={{ maxZoom: 1, padding: 0.2 }}
                         className="validation-flow-canvas"
                     >
                         <Background variant={BackgroundVariant.Dots} gap={16} size={1.5} color="#cbd5e1" />
