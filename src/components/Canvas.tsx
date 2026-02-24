@@ -3,7 +3,6 @@ import {
     ReactFlow,
     Background,
     Controls,
-    MiniMap,
     BackgroundVariant,
     Panel,
 } from '@xyflow/react';
@@ -11,7 +10,7 @@ import '@xyflow/react/dist/style.css';
 import { useFlowStore } from '../store/flowStore';
 import { FlowCardNode } from './nodes/FlowCardNode';
 import { validateFlow, type ValidationError } from '../lib/validation';
-import { AlertCircle, Plus, Download, MousePointerClick, Play, Map } from 'lucide-react';
+import { AlertCircle, Plus, Download, MousePointerClick, Play } from 'lucide-react';
 import { ImportModal } from './ImportModal';
 import {
     ContextMenu,
@@ -37,7 +36,6 @@ export function Canvas() {
     } = useFlowStore();
 
     const [isImportOpen, setIsImportOpen] = useState(false);
-    const [showMiniMap, setShowMiniMap] = useState(true);
 
     const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
 
@@ -85,14 +83,6 @@ export function Canvas() {
                     >
                         <Background variant={BackgroundVariant.Dots} gap={16} size={1.5} color="#cbd5e1" />
                         <Controls className="!mb-4 !ml-4 !shadow-md !rounded-md" />
-                        {showMiniMap && (
-                            <MiniMap
-                                className="!mb-4 !mr-4 !rounded-md !shadow-md !border-2 !border-slate-100"
-                                nodeColor={(node) => {
-                                    return node.data.isStartNode ? '#10b981' : '#3b82f6';
-                                }}
-                            />
-                        )}
 
                         <Panel position="top-left" className="!m-4 flex flex-col gap-3">
                             <div className="flex items-center gap-3 bg-white/90 backdrop-blur-md px-4 py-3 rounded-md shadow-sm border border-slate-200">
@@ -151,10 +141,6 @@ export function Canvas() {
                         <ContextMenuItem onClick={addNode} className="flex items-center gap-2 cursor-pointer py-2 text-slate-700 focus:bg-slate-100">
                             <Plus className="h-4 w-4 text-emerald-600" />
                             <span className="font-medium font-sm">Add New Node</span>
-                        </ContextMenuItem>
-                        <ContextMenuItem onClick={() => setShowMiniMap(!showMiniMap)} className="flex items-center gap-2 cursor-pointer py-2 text-slate-700 focus:bg-slate-100">
-                            <Map className="h-4 w-4 text-purple-600" />
-                            <span className="font-medium font-sm">{showMiniMap ? 'Hide MiniMap' : 'Show MiniMap'}</span>
                         </ContextMenuItem>
                     </ContextMenuContent>
 
