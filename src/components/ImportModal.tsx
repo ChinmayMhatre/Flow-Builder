@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useFlowStore } from '../store/flowStore';
 import type { FlowNode, FlowEdge } from '../store/flowStore';
 import { X, FileJson } from 'lucide-react';
+import dagre from 'dagre';
 
 export function ImportModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
     const [jsonInput, setJsonInput] = useState('');
@@ -66,6 +67,7 @@ export function ImportModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                             source: node.id,
                             target: edge.to_node_id,
                             type: 'default',
+                            label: edge.condition || '',
                             data: {
                                 condition: edge.condition || '',
                                 parameters: edge.parameters,
@@ -75,7 +77,38 @@ export function ImportModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                 }
             });
 
-            setNodes(newNodes);
+            // Auto-layout nodes using Dagre instead of grid overlaps
+            const dagreGraph = new dagre.graphlib.Graph();
+            dagreGraph.setDefaultEdgeLabel(() => ({}));
+            dagreGraph.setGraph({ rankdir: 'LR', align: 'UL', nodesep: 250, ranksep: 500 }); // Increase spacing heavily
+
+            newNodes.forEach((node) => {
+                // Approximate width and height for calculating distances (giving it extra padding)
+                dagreGraph.setNode(node.id, { width: 350, height: 250 });
+            });
+
+            newEdges.forEach((edge) => {
+                // Dagre can sometimes struggle with self-loops in basic directed layouts, 
+                // so we only pass non-self connecting edges to the layout math router
+                if (edge.source !== edge.target) {
+                    dagreGraph.setEdge(edge.source, edge.target);
+                }
+            });
+
+            dagre.layout(dagreGraph);
+
+            const layoutedNodes = newNodes.map((node) => {
+                const nodeWithPosition = dagreGraph.node(node.id);
+                return {
+                    ...node,
+                    position: {
+                        x: nodeWithPosition?.x !== undefined ? nodeWithPosition.x - 350 / 2 : Math.random() * 200, // shift to center
+                        y: nodeWithPosition?.y !== undefined ? nodeWithPosition.y - 250 / 2 : Math.random() * 200,
+                    },
+                };
+            });
+
+            setNodes(layoutedNodes);
             setEdges(newEdges);
             setJsonInput('');
             onClose();
