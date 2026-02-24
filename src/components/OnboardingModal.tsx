@@ -6,17 +6,14 @@ export function OnboardingModal() {
     const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
-        // const hasSeenOnboarding = localStorage.getItem('bolna_onboarding_seen');
-        // if (!hasSeenOnboarding) {
-        //     setIsOpen(true);
-        // }
-
-        // Temporarily commented for debugging
-        setIsOpen(true);
+        const hasSeenOnboarding = localStorage.getItem('bolna_onboarding_seen');
+        if (!hasSeenOnboarding) {
+            setIsOpen(true);
+        }
     }, []);
 
     const handleClose = () => {
-        // localStorage.setItem('bolna_onboarding_seen', 'true');
+        localStorage.setItem('bolna_onboarding_seen', 'true');
         setIsOpen(false);
     };
 
@@ -50,7 +47,7 @@ export function OnboardingModal() {
                         </div>
                         <div>
                             <h3 className="text-sm font-bold text-slate-800">Right-Click Canvas</h3>
-                            <p className="text-xs text-slate-500 mt-1 leading-relaxed">Easily add new nodes or toggle the MiniMap by right-clicking the background.</p>
+                            <p className="text-xs text-slate-500 mt-1 leading-relaxed">Easily add new nodes by right-clicking the background.</p>
                         </div>
                     </div>
                     <div className="flex items-start gap-4 p-3 rounded-md hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100">
