@@ -151,10 +151,6 @@ export function Canvas() {
                             <Plus className="h-4 w-4 text-emerald-600" />
                             <span className="font-medium font-sm">Add New Node</span>
                         </ContextMenuItem>
-                        <ContextMenuItem onClick={() => setIsImportOpen(true)} className="flex items-center gap-2 cursor-pointer py-2 text-slate-700 focus:bg-slate-100">
-                            <Download className="h-4 w-4 text-blue-600" />
-                            <span className="font-medium font-sm">Import JSON Schema</span>
-                        </ContextMenuItem>
                         <ContextMenuItem onClick={() => setShowMiniMap(!showMiniMap)} className="flex items-center gap-2 cursor-pointer py-2 text-slate-700 focus:bg-slate-100">
                             <Map className="h-4 w-4 text-purple-600" />
                             <span className="font-medium font-sm">{showMiniMap ? 'Hide MiniMap' : 'Show MiniMap'}</span>

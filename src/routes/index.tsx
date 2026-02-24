@@ -4,6 +4,7 @@ import { AppSidebar } from '../components/AppSidebar'
 import { JSONPreview } from '../components/JSONPreview'
 import { SidebarProvider } from '../components/ui/sidebar'
 import { TooltipProvider } from '../components/ui/tooltip'
+import { OnboardingModal } from '../components/OnboardingModal'
 
 export const Route = createFileRoute('/')({ component: App })
 
@@ -20,6 +21,7 @@ function App() {
           </div>
           <AppSidebar />
         </div>
+        <OnboardingModal />
       </SidebarProvider>
     </TooltipProvider>
   )
