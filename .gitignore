@@ -13,3 +13,6 @@ __unconfig*
 todos.json
 plan.md
 assignment.md
+
+# Local Netlify folder
+.netlify
