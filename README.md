@@ -2,14 +2,13 @@
 
 A modern, lightweight visual flow builder built with React, TypeScript, and Vite. This application allows users to construct node-based logical flows (similar to tools like Zapier or n8n) and instantly exports them to a strict, validated JSON schema.
 
-## Deliverables Checklist (Assignment Requirements)
+## Features
 
 ### 1. Canvas 
-✅ Add, delete, and drag nodes around using a beautiful glass-morphism UI  
+✅ Add, delete, and drag nodes  
 ✅ Connect nodes by drawing edges between them  
 ✅ Show a label on each edge indicating the transition condition  
-✅ Visually mark the "start" node (denoted by a green Play icon and protected from deletion)  
-✅ **Bonus:** Right-click context menu to quickly add new nodes or toggle the MiniMap  
+✅ Visually mark the "start" node (denoted by a green Play icon and protected from deletion)
 
 ### 2. Node Sidebar
 ✅ Click a node to open a sliding properties panel  
