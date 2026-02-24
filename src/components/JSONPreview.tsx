@@ -3,49 +3,37 @@ import { useFlowStore } from '../store/flowStore';
 import type { SchemaNode, SchemaEdge } from '../types/flow';
 import { Copy, Check, Code2, ChevronUp, ChevronDown } from 'lucide-react';
 import { Button } from './ui/button';
-import { useEffect } from 'react';
 
-function DeferredHighlighter({ data }: { data: any }) {
-    const [SyntaxPlugin, setSyntaxPlugin] = useState<any>(null);
-
-    useEffect(() => {
-        Promise.all([
-            // @ts-ignore
-            import('react-syntax-highlighter/dist/esm/prism.js'),
-            // @ts-ignore
-            import('react-syntax-highlighter/dist/esm/styles/prism/vsc-dark-plus.js')
-        ]).then(([core, style]) => {
-            setSyntaxPlugin({
-                Highlighter: core.default,
-                theme: style.default
-            });
-        });
-    }, []);
-
-    if (!SyntaxPlugin) {
-        return (
-            <pre className="text-slate-300 bg-transparent p-0 m-0 text-xs font-mono w-full h-full">
-                {JSON.stringify(data, null, 2)}
-            </pre>
+function CodeHighlighter({ code }: { code: string }) {
+    // Simple JSON highlighting using regex to avoid SSR-breaking libraries
+    const highlighted = code
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(
+            /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
+            (match) => {
+                let cls = 'text-sky-300'; // numbers
+                if (/^"/.test(match)) {
+                    if (/:$/.test(match)) {
+                        cls = 'text-blue-300 font-medium'; // keys
+                    } else {
+                        cls = 'text-emerald-300'; // strings
+                    }
+                } else if (/true|false/.test(match)) {
+                    cls = 'text-orange-300'; // booleans
+                } else if (/null/.test(match)) {
+                    cls = 'text-slate-400'; // null
+                }
+                return `<span class="${cls}">${match}</span>`;
+            }
         );
-    }
 
-    const { Highlighter, theme } = SyntaxPlugin;
     return (
-        <Highlighter
-            language="json"
-            style={theme}
-            customStyle={{
-                background: 'transparent',
-                padding: 0,
-                margin: 0,
-                fontSize: '0.75rem',
-                height: '100%',
-            }}
-            wrapLines={true}
-        >
-            {JSON.stringify(data, null, 2)}
-        </Highlighter>
+        <pre
+            className="text-[12px] font-mono leading-relaxed whitespace-pre selection:bg-slate-700/50"
+            dangerouslySetInnerHTML={{ __html: highlighted }}
+        />
     );
 }
 
@@ -116,7 +104,7 @@ export function JSONPreview() {
                         {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
                     </Button>
                     <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
-                        <DeferredHighlighter data={generatedSchema} />
+                        <CodeHighlighter code={JSON.stringify(generatedSchema, null, 2)} />
                     </div>
                 </div>
             </div>
